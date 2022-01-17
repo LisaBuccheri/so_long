@@ -23,6 +23,8 @@ typedef struct s_game
 {
     void *mlx_ptr;
     void *win_ptr;
+    int  size_x;
+    int  size_y;
 }   t_game;
 
 typedef struct s_img
@@ -39,5 +41,8 @@ int     mouse_move(int mouse);
 int     deal_key(int key, t_game *param);
 int     ft_close(t_game *game);
 int     check_ber(char *map);
-int     check_map(char *map);
+int     check_map(char *str_map, t_game *game);
 int     map_rectangle(char *str_map, size_t len);
+char    **init_map(char *map, int matrice_len);
+void    create_map(t_game game, char **map);
+void    add_img(t_game game, char *path, int x_pos, int y_pos);

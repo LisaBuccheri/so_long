@@ -46,16 +46,15 @@ int map_rectangle(char *str_map, size_t len)
     return (0);
 }
 
-int check_map(char *str_map)
+int check_map(char *str_map, t_game *game)
 {
     size_t  len;
     int     fd;
-    int     i;
+    int     matrice_len;
     char    *map_line;
-    //char    **map;    //creer une matrice qui contient les elements de la map
 
+    matrice_len = 0;
     fd = open(str_map, O_RDONLY);
-    i = 0;
     map_line = get_next_line(fd);
     len = ft_strlen(map_line);
     while (map_line)
@@ -65,8 +64,65 @@ int check_map(char *str_map)
             free(map_line);
             return (1);
         }
+        matrice_len ++;
         free(map_line);
         map_line = get_next_line(fd);
     }
-    return (0);
+    game->size_x = (int)len - 1;
+    game->size_y = matrice_len;
+    return (matrice_len);
+}
+
+char    **init_map(char *map, int matrice_len)
+{
+    char    **map_mat;
+    char    *map_line;
+    int     fd;
+    int     i;
+
+    i = 0;
+    fd = open(map, O_RDONLY);
+    map_line = get_next_line(fd);
+    map_mat = (char **)malloc((matrice_len + 1) * sizeof(char*));
+    if (!map_mat)
+        write(1, "fucked up\n", 10); // function that free malloc needed
+    while (map_line)
+    {
+        map_mat[i] = malloc((ft_strlen(map_line) + 1) * sizeof(char));
+        if (!map_mat[i])
+            write(1, "fucked up\n", 10); // function that free malloc needed
+        map_mat[i] = map_line;
+        i ++;
+        map_line = get_next_line(fd);
+    }
+    return (map_mat);
+}
+
+void create_map(t_game game, char **map)
+{
+    char *wall = "img/wall.xpm";
+    char *perso = "img/perso_2.xpm";
+    char *ground = "img/ground.xpm";
+    int x;
+    int y;
+
+    y = 0;
+    while (y < game.size_y)
+    {
+        x = 0;
+        while (x < game.size_x)
+        {
+            if (map[y][x] == '0')
+                add_img(game, ground, x * 24, y * 24);
+            else if (map[y][x] == 'P')
+            {
+                add_img(game, ground, x * 24, y * 24); //ne pas oublier d ajouter un sol avant chaque objet
+                add_img(game, perso, x * 24, y * 24);
+            }
+            else if (map[y][x] == '1')
+                add_img(game, wall, x * 24, y * 24);
+            x ++;
+        }
+        y ++;
+    }
 }
