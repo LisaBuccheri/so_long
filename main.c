@@ -6,96 +6,54 @@
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 10:01:53 by lbuccher          #+#    #+#             */
-/*   Updated: 2022/01/10 10:01:55 by lbuccher         ###   ########.fr       */
+/*   Updated: 2022/01/17 19:52:07 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "so_long.h"
-#include <stdio.h>
-/*
-int ft_strlen(char *str)
-{
-    int i;
 
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
-}
-*/
-void   ft_putchar(char c)
+int	deal_key(int key, t_game *param)
 {
-    write(1, &c, 1);
-}
-
-void	ft_putnbr(int n)
-{
-	if (n == -2147483648)
-		write(1, "-2147483648", 11);
-	else if (n < 0)
+	if (key == 53)
 	{
-		ft_putchar('-');
-		ft_putnbr(-n);
+		mlx_destroy_window(param->mlx, param->win);
+		free_matrice(param->s_y, param->map, NULL, 0);
 	}
-	else
-	{
-		if (n > 9)
-		{
-			ft_putnbr(n / 10);
-			n %= 10;
-		}
-		ft_putchar(n + '0');
-	}
-}
-//ferme la fenetre lorsque tu cliques sur la croix
-int ft_close(t_game *game)
-{
-    mlx_destroy_window(game->mlx_ptr, game->win_ptr);
-    //pas oublier de free tous les elements qui sauront utiliser dans le jeu
-    exit(0);
-}
-//ferme la fenetre a la detection de la key esc
-int deal_key(int key, t_game *param)
-{
-    if (key == 53)
-    {
-        mlx_destroy_window(param->mlx_ptr, param->win_ptr);
-        exit(0);
-    }
-    return(0);
-}
-//permet d'afficher une image a l'ecran
-void add_img(t_game game, char *path, int x_pos, int y_pos)
-{
-    int x_y = 24;
-    //char *path = "img/wall.xpm";
-    void *xpm_img = mlx_xpm_file_to_image(game.mlx_ptr, path, &x_y, &x_y);
-    mlx_put_image_to_window(game.mlx_ptr, game.win_ptr, xpm_img, x_pos, y_pos);
+	else if (key == 13)
+		up(param);
+	else if (key == 0)
+		left(param);
+	else if (key == 1)
+		down(param);
+	else if (key == 2)
+		right(param);
+	return (0);
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
-    t_game  game;
-    char    **map;
-    int     matrice_len;
+	t_game	g;
+	int		matrice_len;
 
-    if (argc != 2 || check_ber(argv[1]))
-    {
-        perror(strerror(22));
-        return (1);
-    }
-    matrice_len = check_map(argv[1], &game);
-    printf("x: %d\ny: %d", game.size_x, game.size_y);
-    game.mlx_ptr = mlx_init();
-    game.win_ptr = mlx_new_window(game.mlx_ptr, game.size_x * 24, game.size_y * 24, "test");
-    if (matrice_len == 1)
-    {
-        write(1, "Map error", 9);
-        return (1);
-    }
-    map = init_map(argv[1], matrice_len);
-    create_map(game, map);
-    mlx_key_hook(game.win_ptr, deal_key, &game); //pour les touches
-    mlx_hook(game.win_ptr, 17, 0, ft_close, &game);
-    mlx_loop(game.mlx_ptr);
-    return(0);
+	if (argc != 2 || check_ber(argv[1]))
+		error_exit("Wrong argument");
+	g.wall_p = "img/grey_wall.xpm";
+	g.play_p = "img/perso_2.xpm";
+	g.grou_p = "img/ground.xpm";
+	g.coll_p = "img/collect_skull.xpm";
+	g.door_p = "img/door_close.xpm";
+	g.nb_coll = 0;
+	g.x = 0;
+	g.nb_move = 0;
+	matrice_len = check_map(argv[1], &g);
+	g.mlx = mlx_init();
+	g.win = mlx_new_window(g.mlx, g.s_x * 24, g.s_y * 24, "so_long");
+	if (matrice_len == 1)
+		error_exit("Wrong map size");
+	g.map = init_map(argv[1], matrice_len);
+	create_map(&g, g.map);
+	mlx_string_put(g.mlx, g.win, 5, 1, 15, "0");
+	mlx_key_hook(g.win, deal_key, &g);
+	mlx_hook(g.win, 17, 0, ft_close, &g);
+	mlx_loop(g.mlx);
+	return (0);
 }

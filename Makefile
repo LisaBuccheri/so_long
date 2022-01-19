@@ -12,10 +12,14 @@
 NAME = so_long
 
 SRCS = main.c \
-		map.c \
+		map_check.c \
+		map_init.c \
+		move.c \
+		end.c \
 		get_next_line.c \
 		get_next_line_utils.c \
-
+		bonus_move.c \
+		bonus_enemy.c \
 
 OBJ = $(SRCS:.c=.o)
 
