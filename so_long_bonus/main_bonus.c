@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,7 +9,7 @@
 /*   Updated: 2022/01/17 19:52:07 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	deal_key(int key, t_game *param)
 {
@@ -58,6 +58,7 @@ int	main(int argc, char *argv[])
 		error_exit("Wrong map size");
 	g.map = init_map(argv[1], matrice_len);
 	create_map(&g, g.map);
+	mlx_string_put(g.mlx, g.win, 5, 1, 15, "0");
 	mlx_key_hook(g.win, deal_key, &g);
 	mlx_hook(g.win, 17, 0, ft_close, &g);
 	mlx_loop(g.mlx);

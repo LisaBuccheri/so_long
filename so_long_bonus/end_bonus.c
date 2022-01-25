@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   end.c                                              :+:      :+:    :+:   */
+/*   end_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,13 +9,18 @@
 /*   Updated: 2022/01/18 19:40:00 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	ft_close(t_game *game)
 {
 	mlx_destroy_window(game->mlx, game->win);
 	free_matrice(game->s_y, game->map, NULL, 0);
 	return (0);
+}
+
+void	exit_game(void)
+{
+	exit(0);
 }
 
 void	error_exit(char *text)

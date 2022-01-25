@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move.c                                             :+:      :+:    :+:   */
+/*   move_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,7 +9,7 @@
 /*   Updated: 2022/01/18 15:17:22 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	move(t_game *game)
 {
@@ -35,6 +35,7 @@ void	move(t_game *game)
 		}
 	}
 	game->nb_move ++;
+	put_str(game);
 	if (game->map[game->y][game->x] == 'e')
 		free_matrice(game->s_y, game->map, NULL, 0);
 }
@@ -48,6 +49,8 @@ void	up(t_game *game)
 	{
 		add_img(game, game->grou_p, game->x, game->y);
 		game->y -= 1;
+		is_dead(game, c_wall);
+		move_enemy(game);
 		add_img(game, game->play_p, game->x, game->y);
 		move(game);
 		printf("%d\n", game->nb_move);
@@ -63,6 +66,8 @@ void	down(t_game *game)
 	{
 		add_img(game, game->grou_p, game->x, game->y);
 		game->y += 1;
+		is_dead(game, c_wall);
+		move_enemy(game);
 		add_img(game, game->play_p, game->x, game->y);
 		move(game);
 		printf("%d\n", game->nb_move);
@@ -78,6 +83,8 @@ void	left(t_game *game)
 	{
 		add_img(game, game->grou_p, game->x, game->y);
 		game->x -= 1;
+		is_dead(game, c_wall);
+		move_enemy(game);
 		add_img(game, game->play_p, game->x, game->y);
 		move(game);
 		printf("%d\n", game->nb_move);
@@ -93,6 +100,8 @@ void	right(t_game *game)
 	{
 		add_img(game, game->grou_p, game->x, game->y);
 		game->x += 1;
+		is_dead(game, c_wall);
+		move_enemy(game);
 		add_img(game, game->play_p, game->x, game->y);
 		move(game);
 		printf("%d\n", game->nb_move);

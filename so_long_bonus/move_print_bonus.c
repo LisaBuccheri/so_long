@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus.c                                            :+:      :+:    :+:   */
+/*   move_print_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,16 +9,19 @@
 /*   Updated: 2022/01/19 16:42:17 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	put_str(t_game *game)
 {
-	int	x;
+	int		x;
+	char	*nb_move;
 
 	x = -1;
+	nb_move = ft_itoa(game->nb_move);
 	while (++x < 5)
 		add_img(game, game->wall_p, x, 0);
-	mlx_string_put(game->mlx, game->win, 5, 1, 15, ft_itoa(game->nb_move));
+	mlx_string_put(game->mlx, game->win, 5, 1, 15, nb_move);
+	free(nb_move);
 }
 
 int	count(long int n)

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_init.c                                         :+:      :+:    :+:   */
+/*   map_init_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbuccher <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,7 +9,7 @@
 /*   Updated: 2022/01/18 12:23:29 by lbuccher         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	*add_img(t_game *game, char *path, int x_pos, int y_pos)
 {
@@ -95,13 +95,10 @@ void	create_map(t_game *game, char **map)
 				free_matrice(game->s_y, game->map, "Not  closed by walls", 1);
 			if (map[y][0] != '1' || map[y][game->s_x - 1] != '1')
 				free_matrice(game->s_y, game->map, "Not  closed by walls", 1);
-			else if ((game->map[y][x] != 'P') && (game->map[y][x] != 'E') &&
-				(game->map[y][x] != 'C') && (game->map[y][x] != '0') &&
-				(game->map[y][x] != '1'))
-				free_matrice(game->s_y, game->map, "Unknown caracter", 1);
 			add_img_to_map(game, map[y][x], x, y);
 			x ++;
 		}
 		y ++;
 	}
+	add_enemy(game);
 }
